@@ -2,6 +2,12 @@ import { throws } from 'smid'
 import { MakeErrorClass } from '../make-error-class'
 
 describe('MakeErrorClass', () => {
+  it('does not require a default message', () => {
+    class Test extends MakeErrorClass() {}
+    const err = new Test()
+    expect(err.message).toBe('An error occured')
+  })
+
   it('uses the specified class name', () => {
     class Test extends MakeErrorClass('This is a test') {}
 
