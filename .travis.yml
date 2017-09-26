@@ -1,9 +1,18 @@
 # Oh yeah!
 language: node_js
+cache:
+  directories:
+    - node_modules
+notifications:
+  email: false
 
 # Add additional versions here as appropriate.
 node_js:
   - "stable"
+  - "9"
+  - "8"
+  - "7"
+  - "6"
 
 # Lint errors should trigger a failure.
 before_script: >
@@ -17,3 +26,7 @@ script: npm run cover
 after_success: >
   npm run coveralls
   npm run semantic-release
+
+branches:
+  except:
+    - /^v\d+\.\d+\.\d+$/

@@ -1,6 +1,6 @@
 {
   "name": "fejl",
-  "version": "0.0.0-semantic",
+  "version": "0.0.0-development",
   "description": "Error-making utility for JavaScript apps.",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
@@ -48,7 +48,7 @@
     "@types/rimraf": "^2.0.2",
     "jest": "^20.0.4",
     "rimraf": "^2.6.1",
-    "semantic-release": "^7.0.2",
+    "semantic-release": "^8.0.3",
     "semantic-release-conventional-commits": "^1.1.0",
     "smid": "^0.1.1",
     "ts-jest": "^20.0.14",
