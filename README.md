@@ -68,7 +68,7 @@ Additionally, for your convenience, a few common HTTP errors have been defined w
 
 # Additional awesomeness
 
-Fejl wants to get rid of excessive boilerplate in conditionally throwing errors. Therefore, each error class created with `MakeErrorClass` comes with the following functions:
+Fejl wants to get rid of excessive boilerplate in conditionally throwing errors. Therefore, each error class created with `MakeErrorClass` comes with the following **static functions**:
 
 ## `assert(data, message)`
 

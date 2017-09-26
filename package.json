@@ -15,7 +15,6 @@
     "lint:watch": "nodemon --exec npm run lint",
     "cover": "jest --coverage",
     "coveralls": "jest --coverage && cat ./coverage/lcov.info | coveralls",
-    "typedoc": "typedoc --name 'Fejl' --out docs --theme markdown --mdFlavour github --mdHideSources --exclude '**/*.test.*'",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "repository": {
@@ -55,8 +54,6 @@
     "ts-jest": "^20.0.14",
     "tslint": "^5.7.0",
     "tslint-config-standard": "^6.0.1",
-    "typedoc": "^0.8.0",
-    "typedoc-plugin-markdown": "^1.0.8",
     "typescript": "^2.5.2"
   },
   "jest": {
