@@ -88,7 +88,7 @@ Let's see how `InvalidInput.assert` can make our lives easier.
 ```js
 function someFunc (value) {
   if (!value) {
-    throw new InvalidInput('Value is required.)
+    throw new InvalidInput('Value is required.')
   }
 }
 ```
@@ -97,7 +97,7 @@ function someFunc (value) {
 
 ```js
 function someFunc (value) {
-  InvalidInput.assert(value, 'Value is required)
+  InvalidInput.assert(value, 'Value is required')
 }
 ```
 
