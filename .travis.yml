@@ -9,7 +9,6 @@ notifications:
 # Add additional versions here as appropriate.
 node_js:
   - "stable"
-  - "9"
   - "8"
   - "7"
   - "6"
