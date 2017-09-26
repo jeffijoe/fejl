@@ -1,0 +1,6 @@
+examples
+coverage
+.test-out
+src
+**/__tests__/**
+**/__helpers__/**
