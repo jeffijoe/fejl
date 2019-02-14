@@ -9,9 +9,9 @@ describe('http', () => {
 
   it('allows inheriting (with decent type support)', () => {
     class ProxyIsDown extends http.Unavailable {
-      proxy: string
+      proxy!: string
 
-      constructor (message: string, data: { proxy: string }) {
+      constructor(message: string, data: { proxy: string }) {
         super(message, data)
       }
     }
@@ -24,5 +24,7 @@ describe('http', () => {
     expect(json.statusCode).toBe(503)
     expect(json.proxy).toBe('one')
     expect(json.message).toBe('Uh-oh')
+
+    expect(() => ProxyIsDown.assert(false, 'Oh well')).toThrowError(ProxyIsDown)
   })
 })

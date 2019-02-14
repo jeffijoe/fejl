@@ -37,8 +37,7 @@ class InvalidConfigError extends MakeErrorClass(
   'The configuration file is invalid',
   // Default props
   { infoUrl: 'https://example.com/error-info' }
-) {
-}
+) {}
 
 // Using defaults
 try {
@@ -53,10 +52,10 @@ try {
 
 // Overriding defaults
 try {
-  throw new InvalidConfigError(
-    'The config file was not found', 
-    { infoUrl: 'https://example.com/other-err', code: 123 }
-  )
+  throw new InvalidConfigError('The config file was not found', {
+    infoUrl: 'https://example.com/other-err',
+    code: 123
+  })
 } catch (err) {
   console.log(err.message) // 'The configuration file is invalid'
   console.log(err.infoUrl) // 'https://example.com/other-err'
@@ -70,7 +69,7 @@ Additionally, for your convenience, a few common HTTP errors have been defined w
 
 Fejl wants to get rid of excessive boilerplate in conditionally throwing errors. Therefore, each error class created with `MakeErrorClass` comes with the following **static functions**:
 
-## `assert(data, message)`
+## `assert<T>(data: T, message: string): T`
 
 Let's create ourselves an error class to play with.
 
@@ -86,7 +85,7 @@ Let's see how `InvalidInput.assert` can make our lives easier.
 **Ugly:**
 
 ```js
-function someFunc (value) {
+function someFunc(value) {
   if (!value) {
     throw new InvalidInput('Value is required.')
   }
@@ -96,12 +95,12 @@ function someFunc (value) {
 **Sexy:**
 
 ```js
-function someFunc (value) {
+function someFunc(value) {
   InvalidInput.assert(value, 'Value is required')
 }
 ```
 
-## `makeAssert(message)`
+## `makeAssert<T>(message: string): Asserter<T>`
 
 Sometimes an error can be thrown in multiple places, but the message would be the same. `makeAssert` will generate an asserter function that can be reused, and which is also really useful when working with `Promise`s.
 
@@ -116,7 +115,7 @@ import { NotFound } from 'fejl'
 **Ugly:**
 
 ```js
-async function getTaskForUser (userId, taskId) {
+async function getTaskForUser(userId, taskId) {
   const user = await getUserAsync(userId)
   if (!user) {
     throw new NotFound('User not found')
@@ -134,7 +133,7 @@ async function getTaskForUser (userId, taskId) {
 **Sexy:**
 
 ```js
-async function getTaskForUser (userId, taskId) {
+async function getTaskForUser(userId, taskId) {
   const user = await getUserAsync(userId)
   NotFound.assert(user, 'User not found')
 
@@ -148,15 +147,39 @@ async function getTaskForUser (userId, taskId) {
 **Sexier:**
 
 ```js
-async function getTaskForUser (userId, taskId) {
-  const user = await getUserAsync(userId)
-    .then(NotFound.makeAssert('User not found'))
+async function getTaskForUser(userId, taskId) {
+  const user = await getUserAsync(userId).then(
+    NotFound.makeAssert('User not found')
+  )
 
-  const task = await getTaskAsync(userId, taskId)
-    .then(NotFound.makeAssert('Task not found'))
+  const task = await getTaskAsync(userId, taskId).then(
+    NotFound.makeAssert('Task not found')
+  )
 
   return task
 }
+```
+
+## `retry<T>(fn: () => Promise<T>, opts?: RetryOpts): Promise<T>`
+
+Keeps running the inner `fn` until it _does not_ throw errors of the type that `.retry` was called on.
+
+```ts
+const eventuallyExists = await NotFound.retry(
+  async () => {
+    const report = await getSomeReportThatMayOrMayNotExistAtSomePointInTime().then(
+      NotFound.makeAssert('The report was not found')
+    )
+    return report
+  },
+  {
+    // These are available options with their defaults.
+    tries: 10, // How many times to try
+    factor: 2, // The exponential backoff factor to use.
+    minTimeout: 1000, // The minimum amount of time to wait between retries in ms
+    maxTimeout: Infinity // The nax amount of time to wait between retries in ms
+  }
+)
 ```
 
 # What's in a name?

@@ -97,7 +97,7 @@ export class Unavailable extends MakeHttpError(503, 'Unavailable') {}
  * @param statusCode The status code.
  * @param message The message.
  */
-function MakeHttpError (
+function MakeHttpError(
   statusCode: number,
   message: string
 ): BaseErrorConstructor<{ statusCode: number }> {

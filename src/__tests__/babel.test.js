@@ -5,7 +5,9 @@ describe('MakeErrorClass', () => {
   it('uses the specified class name', () => {
     class Test extends MakeErrorClass('This is a test') {}
 
-    const err = throws(() => { throw new Test() })
+    const err = throws(() => {
+      throw new Test()
+    })
     expect(Test.name).toBe('Test')
     expect(err.name).toBe('Test')
   })

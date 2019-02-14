@@ -11,7 +11,9 @@ describe('MakeErrorClass', () => {
   it('uses the specified class name', () => {
     class Test extends MakeErrorClass('This is a test') {}
 
-    const err = throws(() => { throw new Test() })
+    const err = throws(() => {
+      throw new Test()
+    })
     expect(Test.name).toBe('Test')
     expect(err.name).toBe('Test')
   })
@@ -66,7 +68,7 @@ describe('MakeErrorClass', () => {
 
     it('can override toJSON', () => {
       class Overrider extends Test {
-        toJSON () {
+        toJSON() {
           return { message: 'This is not the error you be lookin for' }
         }
       }
@@ -78,7 +80,7 @@ describe('MakeErrorClass', () => {
 
     it('can call super.toJSON', () => {
       class Overrider extends Test {
-        toJSON () {
+        toJSON() {
           return {
             ...super.toJSON(),
             surprise: true
@@ -91,6 +93,29 @@ describe('MakeErrorClass', () => {
       expect(json.message).toBe('Oh no')
       expect(json).toHaveProperty('stack')
       expect(json.surprise).toBe(true)
+    })
+  })
+
+  describe('retry', () => {
+    class RetryPlz extends MakeErrorClass('Retry') {}
+    class AnuthaOne extends MakeErrorClass('DJ KHALED (why am I yelling)') {}
+
+    test('retries', async () => {
+      let count = 0
+      const result = await RetryPlz.retry(async () => {
+        RetryPlz.assert(count++, 'Didnt do it')
+        return true
+      })
+      expect(result).toBe(true)
+    })
+
+    test('throws', async () => {
+      let count = 0
+      const result = await RetryPlz.retry(async () => {
+        AnuthaOne.assert(count++, 'Didnt do it')
+        return true
+      }).catch(err => err)
+      expect(result).toBeInstanceOf(AnuthaOne)
     })
   })
 })

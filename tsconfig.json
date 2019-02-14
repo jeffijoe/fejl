@@ -1,8 +1,5 @@
 {
-  "exclude": [
-    "node_modules",
-    "lib"
-  ],
+  "exclude": ["node_modules", "lib"],
   "compileOnSave": false,
   "compilerOptions": {
     "outDir": "./lib",
@@ -14,14 +11,12 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "noEmitHelpers": true,
+    "esModuleInterop": true,
     "sourceMap": true,
     "declaration": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": "./",
-    "lib": [
-      "es6",
-      "es7"
-    ]
+    "lib": ["es6", "es7"]
   }
 }

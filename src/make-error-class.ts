@@ -1,4 +1,5 @@
 import { BaseError as CustomError } from 'make-error'
+import { retry, RetryOptions } from './retry'
 
 /**
  * Base error class.
@@ -10,7 +11,7 @@ export class BaseError<A> extends CustomError {
    * @param message Error message.
    * @param attrs Attributes to merge onto the instance.
    */
-  constructor (message?: string, attrs?: Partial<ErrorAttributes<A>>) {
+  constructor(message?: string, attrs?: Partial<ErrorAttributes<A>>) {
     super(message)
     Object.assign(this, attrs)
   }
@@ -21,7 +22,7 @@ export class BaseError<A> extends CustomError {
    * @example
    *   promise.then(MyError.makeAssert('Stuff was not found'))
    */
-  static makeAssert<T> (message: string): Asserter<T> {
+  static makeAssert<T>(message: string): Asserter<T> {
     return (value: T) => this.assert(value, message)
   }
 
@@ -31,7 +32,7 @@ export class BaseError<A> extends CustomError {
    * @param data The data to check.
    * @param message The message to construct the error with.
    */
-  static assert <T> (data: T, message?: string): T | never {
+  static assert<T>(data: T, message?: string): T | never {
     if (!data) {
       throw new this(message)
     }
@@ -40,9 +41,30 @@ export class BaseError<A> extends CustomError {
   }
 
   /**
+   * Retries the function until it does not throw the error type.
+   * @param fn
+   * @param opts
+   */
+  static retry<T>(
+    fn: (attempt: number) => Promise<T>,
+    opts?: Partial<RetryOptions>
+  ): Promise<T> {
+    return retry((again, attempt) => {
+      return Promise.resolve()
+        .then(() => fn(attempt))
+        .catch(err => {
+          if (err instanceof this) {
+            throw again(err)
+          }
+          throw err
+        })
+    }, opts)
+  }
+
+  /**
    * Default toJSON implementation.
    */
-  toJSON (): Object {
+  toJSON(): Object {
     const result: any = {
       stack: this.stack,
       message: this.message
@@ -75,15 +97,23 @@ export interface BaseErrorConstructor<A> {
   /**
    * Constructs the error.
    */
-  new (message?: string, attrs?: Partial<ErrorAttributes<A>>): BaseError<A> & ErrorAttributes<A>
+  new (message?: string, attrs?: Partial<ErrorAttributes<A>>): BaseError<A> &
+    ErrorAttributes<A>
   /**
    * Makes an asserter function.
    */
-  makeAssert<T> (message: string): Asserter<T>
+  makeAssert<T>(message: string): Asserter<T>
   /**
    * Asserts the truthiness of the given value, throws the error otherwise.
    */
-  assert<T> (data: T, message?: string): T | never
+  assert<T>(data: T, message?: string): T | never
+  /**
+   * Retries the function until it does not throw the error type.
+   */
+  retry<T>(
+    fn: (attempt: number) => Promise<T>,
+    opts?: Partial<RetryOptions>
+  ): Promise<T>
 }
 
 /**
@@ -93,11 +123,15 @@ export interface BaseErrorConstructor<A> {
  * @param defaultMessage The default error message.
  * @param defaultAttrs The default attributes for creating new instances.
  */
-export function MakeErrorClass <A = {}> (defaultMessage: string = 'An error occured', defaultAttrs?: A) {
+export function MakeErrorClass<A = {}>(
+  defaultMessage: string = 'An error occured',
+  defaultAttrs?: A
+) {
   class ConfiguredError extends BaseError<A> {
-    constructor (message?: string, attrs?: A) {
-      // tslint:disable-next-line
-      message = message === null || message === undefined ? defaultMessage : message
+    constructor(message?: string, attrs?: A) {
+      message =
+        // tslint:disable-next-line
+        message === null || message === undefined ? defaultMessage : message
       // istanbul ignore next: TS <-> Istanbul issue
       super(message, Object.assign({}, defaultAttrs, attrs))
     }
