@@ -33,3 +33,16 @@ test('wait time calculation', () => {
   expect(computeNextWaitTime(1000, 5000, 1500, 1.5)).toBe(2250)
   expect(computeNextWaitTime(1000, 5000, 2250, 1.5)).toBe(3375)
 })
+
+test('tries = 0', async () => {
+  let count = 0
+  const err = await retry(
+    again => {
+      count++
+      throw again(new Error('Nah'))
+    },
+    { tries: 0, minTimeout: 5, factor: 1 }
+  ).catch(err => err)
+  expect(err.message).toBe('Nah')
+  expect(count).toBe(1)
+})

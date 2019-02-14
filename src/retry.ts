@@ -83,7 +83,7 @@ export function retry<T>(
      * @param err
      */
     function getErrorToThrow(err: any) {
-      if (attempts === retries) {
+      if (attempts >= retries) {
         return err
       }
 
