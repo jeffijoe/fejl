@@ -1,5 +1,6 @@
 import { BaseError as CustomError } from 'make-error'
 import { retry, RetryOptions } from './retry'
+import { ignore, IgnoreFunc } from './ignore'
 
 /**
  * Base error class.
@@ -62,6 +63,25 @@ export class BaseError<A> extends CustomError {
   }
 
   /**
+   * Makes an ignore function for this error class.
+   */
+  static ignore(): IgnoreFunc<undefined>
+  /**
+   * Makes an ignore function for this error class that will return the specified value if caught.
+   *
+   * @param valueToReturnOnCatch
+   */
+  static ignore<T>(valueToReturnOnCatch: T): IgnoreFunc<T>
+  /**
+   * Makes an ignore function for this error class that will return the specified value if caught.
+   *
+   * @param valueToReturnOnCatch
+   */
+  static ignore(valueToReturnOnCatch?: any): IgnoreFunc<any> {
+    return ignore(this)(valueToReturnOnCatch)
+  }
+
+  /**
    * Default toJSON implementation.
    */
   toJSON(): Object {
@@ -114,6 +134,22 @@ export interface BaseErrorConstructor<A> {
     fn: (attempt: number) => Promise<T>,
     opts?: Partial<RetryOptions>
   ): Promise<T>
+  /**
+   * Makes an ignore function for this error class.
+   */
+  ignore(): IgnoreFunc<undefined>
+  /**
+   * Makes an ignore function for this error class that will return the specified value if caught.
+   *
+   * @param valueToReturnOnCatch
+   */
+  ignore<T>(valueToReturnOnCatch: T): IgnoreFunc<T>
+  /**
+   * Makes an ignore function for this error class that will return the specified value if caught.
+   *
+   * @param valueToReturnOnCatch
+   */
+  ignore(valueToReturnOnCatch?: any): IgnoreFunc<any>
 }
 
 /**

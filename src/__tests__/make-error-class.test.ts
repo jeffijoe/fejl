@@ -119,3 +119,21 @@ describe('MakeErrorClass', () => {
     })
   })
 })
+
+describe('ignore', async () => {
+  class IgnorePlz extends MakeErrorClass('Ignore plz') {}
+
+  test('works', async () => {
+    expect(
+      await Promise.resolve(false)
+        .then(IgnorePlz.makeAssert('Plz'))
+        .catch(IgnorePlz.ignore())
+    ).toBe(undefined)
+
+    expect(
+      await Promise.resolve(false)
+        .then(IgnorePlz.makeAssert('Plz'))
+        .catch(IgnorePlz.ignore(123))
+    ).toBe(123)
+  })
+})

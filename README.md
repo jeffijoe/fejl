@@ -182,6 +182,37 @@ const eventuallyExists = await NotFound.retry(
 )
 ```
 
+## `ignore<T>(valueToReturnOnCatch: T): IgnoreFunc<T>`
+
+Makes an ignore function for this error class that will return the specified value if caught.
+Otherwise throws the original error.
+
+```ts
+// If a `NotFound` is thrown, returns 99.95
+const price = await getSomeRemotePriceThatMayOrMayNotExist().catch(
+  NotFound.ignore(99.95)
+)
+
+// Using try-catch
+try {
+  return getSomeRemotePriceThatMayOrMayNotExist()
+} catch (err) {
+  return NotFound.ignore(99.95)(err)
+}
+```
+
+You can check multiple errors at once by using the top-level higher-order ignore utility.
+
+```ts
+import { ignore } from 'fejl'
+
+// If a `NotFound` or `Forbidden` is thrown, returns 99.95
+const price = await getSomeRemotePriceThatMayOrMayNotExist().catch(
+  // Note the double-invocation
+  ignore(NotFound, Forbidden)(99.95)
+)
+```
+
 # What's in a name?
 
 "fejl" _[fɑjl]_ is danish for _"error"_, and when pronounced in English also sounds like the word "fail".
