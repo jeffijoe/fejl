@@ -182,6 +182,32 @@ const eventuallyExists = await NotFound.retry(
 )
 ```
 
+You can import the `retry` top-level utilty that is not bound to any particular error.
+
+The API is similar to `promise-retry`.
+
+```ts
+import { retry } from 'fejl'
+
+const result = await retry(
+  async (again, attempt) => {
+    return getSomeReportThatMayOrMayNotExistAtSomePointInTime()
+      .then(NotFound.makeAssert('The report was not found'))
+      .catch(err => {
+        if (err instanceof NotFound) {
+          // Only retry on NotFound errors.
+          throw again(err)
+        }
+        throw err
+      })
+  },
+  {
+    // options...
+    tries: 10
+  }
+)
+```
+
 ## `ignore<T>(valueToReturnOnCatch: T): IgnoreFunc<T>`
 
 Makes an ignore function for this error class that will return the specified value if caught.
