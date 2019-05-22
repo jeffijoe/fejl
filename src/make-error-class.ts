@@ -20,11 +20,17 @@ export class BaseError<A> extends CustomError {
   /**
    * Preconfigures an `assert` function.
    *
+   * @param message Error message.
+   * @param attrs Attributes to merge onto the instance.
+   *
    * @example
    *   promise.then(MyError.makeAssert('Stuff was not found'))
    */
-  static makeAssert<T>(message: string): Asserter<T> {
-    return (value: T) => this.assert(value, message)
+  static makeAssert<T, A>(
+    message: string,
+    attrs?: Partial<ErrorAttributes<A>>
+  ): Asserter<T> {
+    return (value: T) => this.assert(value, message, attrs)
   }
 
   /**
@@ -32,10 +38,15 @@ export class BaseError<A> extends CustomError {
    *
    * @param data The data to check.
    * @param message The message to construct the error with.
+   * @param attrs Attributes to merge onto the instance.
    */
-  static assert<T>(data: T, message?: string): T | never {
+  static assert<T, A>(
+    data: T,
+    message?: string,
+    attrs?: Partial<ErrorAttributes<A>>
+  ): T | never {
     if (!data) {
-      throw new this(message)
+      throw new this(message, attrs)
     }
 
     return data
@@ -122,11 +133,18 @@ export interface BaseErrorConstructor<A> {
   /**
    * Makes an asserter function.
    */
-  makeAssert<T>(message: string): Asserter<T>
+  makeAssert<T, A>(
+    message: string,
+    attrs?: Partial<ErrorAttributes<A>>
+  ): Asserter<T>
   /**
    * Asserts the truthiness of the given value, throws the error otherwise.
    */
-  assert<T>(data: T, message?: string): T | never
+  assert<T, A>(
+    data: T,
+    message?: string,
+    attrs?: Partial<ErrorAttributes<A>>
+  ): T | never
   /**
    * Retries the function until it does not throw the error type.
    */
