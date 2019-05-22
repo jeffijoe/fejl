@@ -41,6 +41,19 @@ describe('MakeErrorClass', () => {
     })
   })
 
+  describe('assert with custom data', () => {
+    class Test extends MakeErrorClass('This is a test', { statusCode: 400 }) {}
+
+    it('throws the correct error', () => {
+      const err = throws<Test>(() =>
+        Test.assert(false, 'Oh no', { foo: 'bar', statusCode: 444 })
+      )
+      expect(err.message).toBe('Oh no')
+      expect(err.statusCode).toBe(444)
+      expect(err.foo).toBe('bar')
+    })
+  })
+
   describe('makeAssert', () => {
     class Test extends MakeErrorClass('This is a test', { statusCode: 400 }) {}
 
@@ -51,6 +64,19 @@ describe('MakeErrorClass', () => {
       expect(err.message).toBe('Nope')
 
       expect(assert(1337)).toBe(1337)
+    })
+  })
+
+  describe('makeAssert with custom data', () => {
+    class Test extends MakeErrorClass('This is a test', { statusCode: 400 }) {}
+
+    it('returns an asserter function', () => {
+      const assert = Test.makeAssert('Nope', { foo: 'bar', statusCode: 444 })
+      const err = throws<Test>(() => assert(false))
+
+      expect(err.statusCode).toBe(444)
+      expect(err.foo).toBe('bar')
+      expect(err.message).toBe('Nope')
     })
   })
 
