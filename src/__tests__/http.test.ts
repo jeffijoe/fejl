@@ -8,7 +8,7 @@ describe('http', () => {
   })
 
   it('allows inheriting (with decent type support)', () => {
-    class ProxyIsDown extends http.Unavailable {
+    class ProxyIsDown extends http.ServiceUnavailable {
       proxy!: string
 
       constructor(message: string, data: { proxy: string }) {
