@@ -29,7 +29,7 @@ describe('MakeErrorClass', () => {
   })
 
   describe('assert', () => {
-    class Test extends MakeErrorClass('This is a test', { statusCode: 400 }) {}
+    class Test extends MakeErrorClass('This is a test') {}
 
     it('throws the correct error', () => {
       const err = throws<Test>(() => Test.assert(false, 'Oh no'))
@@ -146,7 +146,7 @@ describe('MakeErrorClass', () => {
   })
 })
 
-describe('ignore', async () => {
+describe('ignore', () => {
   class IgnorePlz extends MakeErrorClass('Ignore plz') {}
 
   test('works', async () => {

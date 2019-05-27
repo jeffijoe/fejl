@@ -133,14 +133,14 @@ export interface BaseErrorConstructor<A> {
   /**
    * Makes an asserter function.
    */
-  makeAssert<T, A>(
+  makeAssert<T>(
     message: string,
     attrs?: Partial<ErrorAttributes<A>>
   ): Asserter<T>
   /**
    * Asserts the truthiness of the given value, throws the error otherwise.
    */
-  assert<T, A>(
+  assert<T>(
     data: T,
     message?: string,
     attrs?: Partial<ErrorAttributes<A>>
