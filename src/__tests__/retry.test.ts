@@ -1,4 +1,5 @@
 import { retry, computeNextWaitTime } from '../retry'
+import { throws } from 'smid'
 
 test('basic', async () => {
   let i = 0
@@ -14,13 +15,15 @@ test('basic', async () => {
 
 test('exhaust', async () => {
   let count = 0
-  const err = await retry(
-    again => {
-      count++
-      throw again(new Error('Nah'))
-    },
-    { tries: 2, minTimeout: 5, factor: 1 }
-  ).catch(err => err)
+  const err = await throws(
+    retry(
+      again => {
+        count++
+        throw again(new Error('Nah'))
+      },
+      { tries: 2, minTimeout: 5, factor: 1 }
+    )
+  )
   expect(err.message).toBe('Nah')
   expect(count).toBe(2)
 })
@@ -36,13 +39,15 @@ test('wait time calculation', () => {
 
 test('tries = 0', async () => {
   let count = 0
-  const err = await retry(
-    again => {
-      count++
-      throw again(new Error('Nah'))
-    },
-    { tries: 0, minTimeout: 5, factor: 1 }
-  ).catch(err => err)
+  const err = await throws(
+    retry(
+      again => {
+        count++
+        throw again(new Error('Nah'))
+      },
+      { tries: 0, minTimeout: 5, factor: 1 }
+    )
+  )
   expect(err.message).toBe('Nah')
   expect(count).toBe(1)
 })
