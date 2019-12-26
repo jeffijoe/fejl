@@ -262,6 +262,104 @@ export class NetworkAuthenticationRequired extends MakeHttpError(
 ) {}
 
 /**
+ * HTTP error constructor.
+ */
+export type HttpErrorConstructor = BaseErrorConstructor<{ statusCode: number }>
+
+/**
+ * Gets an error constructor for a HTTP status code.
+ *
+ * @param statusCode
+ */
+export function getHttpErrorConstructorForStatusCode(
+  statusCode: number
+): HttpErrorConstructor {
+  /* istanbul ignore next */
+  switch (statusCode) {
+    case 400:
+      return BadRequest
+    case 401:
+      return NotAuthenticated
+    case 402:
+      return PaymentRequired
+    case 403:
+      return Forbidden
+    case 404:
+      return NotFound
+    case 405:
+      return MethodNotAllowed
+    case 406:
+      return NotAcceptable
+    case 407:
+      return ProxyAuthenticationRequired
+    case 408:
+      return Timeout
+    case 409:
+      return Conflict
+    case 410:
+      return Gone
+    case 411:
+      return LengthRequired
+    case 412:
+      return PreconditionFailed
+    case 413:
+      return PayloadTooLarge
+    case 414:
+      return UriTooLong
+    case 415:
+      return UnsupportedMediaType
+    case 416:
+      return RequestRangeNotSatisfiable
+    case 417:
+      return ExpectationFailed
+    case 418:
+      return IAmATeapot
+    case 421:
+      return MisdirectedRequest
+    case 422:
+      return Unprocessable
+    case 423:
+      return Locked
+    case 424:
+      return FailedDependency
+    case 425:
+      return TooEarly
+    case 426:
+      return UpgradeRequired
+    case 428:
+      return PreconditionRequired
+    case 429:
+      return TooManyRequests
+    case 431:
+      return RequestHeaderFieldsTooLarge
+    case 451:
+      return UnavailableForLegalReasons
+    case 501:
+      return NotImplemented
+    case 502:
+      return BadGateway
+    case 503:
+      return ServiceUnavailable
+    case 504:
+      return GatewayTimeout
+    case 505:
+      return HttpVersionNotSupported
+    case 506:
+      return VariantAlsoNegotiates
+    case 507:
+      return InsufficientStorage
+    case 508:
+      return LoopDetected
+    case 510:
+      return NotExtended
+    case 511:
+      return NetworkAuthenticationRequired
+    default:
+      return GeneralError
+  }
+}
+
+/**
  * Builds a HTTP status code based error class.
  *
  * @private
@@ -271,6 +369,6 @@ export class NetworkAuthenticationRequired extends MakeHttpError(
 function MakeHttpError(
   statusCode: number,
   message: string
-): BaseErrorConstructor<{ statusCode: number }> {
+): HttpErrorConstructor {
   return MakeErrorClass(message, { statusCode })
 }

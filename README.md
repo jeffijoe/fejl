@@ -239,6 +239,18 @@ const price = await getSomeRemotePriceThatMayOrMayNotExist().catch(
 )
 ```
 
+## `getHttpErrorConstructorForStatusCode(statusCode: number): HttpErrorConstructor`
+
+Given a status code, returns the proper error to throw.
+
+```ts
+import { getHttpErrorConstructorForStatusCode, BadRequest } from 'fejl'
+
+const ErrorCtor = getHttpErrorConstructorForStatusCode(400)
+
+ErrorCtor === BadRequest // true
+```
+
 # What's in a name?
 
 "fejl" _[fɑjl]_ is danish for _"error"_, and when pronounced in English also sounds like the word "fail".
