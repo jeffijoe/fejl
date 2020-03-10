@@ -196,5 +196,5 @@ export function MakeErrorClass<A = {}>(
     }
   }
 
-  return ConfiguredError as BaseErrorConstructor<A>
+  return (ConfiguredError as unknown) as BaseErrorConstructor<A>
 }
