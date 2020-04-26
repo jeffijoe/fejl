@@ -9,6 +9,6 @@
     "outDir": "./lib/esm",
     "target": "es2015",
     "module": "es2015",
-    "sourceMap": false,
+    "sourceMap": true
   }
 }
