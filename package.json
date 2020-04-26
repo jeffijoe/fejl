@@ -5,9 +5,12 @@
   "main": "lib/index.js",
   "exports": {
     "require": "./lib/index.js",
-    "import": "./lib/esm/index.js"
+    "import": "./lib/esm/index.js",
+    "default": "./lib/esm/index.js"
   },
   "type": "commonjs",
+  "module": "lib/esm/index.js",
+  "jsnext:main": "lib/esm/index.js",
   "typings": "lib/index.d.ts",
   "engines": {
     "node": ">=6.0.0"
