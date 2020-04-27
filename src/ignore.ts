@@ -11,7 +11,7 @@ export type IgnoreFunc<T> = (err: any) => T | never
 export function ignore<T>(...errorClasses: Array<new () => Error>) {
   return function createIgnoreFn(valToReturnOnCatch: T): IgnoreFunc<T> {
     return function ignoreImpl(err: any) {
-      if (errorClasses.some(C => err instanceof C)) {
+      if (errorClasses.some((C) => err instanceof C)) {
         return valToReturnOnCatch
       }
       throw err

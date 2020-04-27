@@ -66,7 +66,7 @@ export class BaseError<A> extends CustomError {
     return retry((again, attempt) => {
       return Promise.resolve()
         .then(() => fn(attempt))
-        .catch(err => {
+        .catch((err) => {
           if (err instanceof this) {
             throw again(err)
           }
@@ -100,7 +100,7 @@ export class BaseError<A> extends CustomError {
   toJSON(): Object {
     const result: any = {
       stack: this.stack,
-      message: this.message
+      message: this.message,
     }
     for (const prop in this) {
       const val = this[prop] as any

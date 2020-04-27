@@ -109,7 +109,7 @@ describe('MakeErrorClass', () => {
         toJSON() {
           return {
             ...super.toJSON(),
-            surprise: true
+            surprise: true,
           }
         }
       }
@@ -140,7 +140,7 @@ describe('MakeErrorClass', () => {
       const result = await RetryPlz.retry(async () => {
         AnuthaOne.assert(count++, 'Didnt do it')
         return true
-      }).catch(err => err)
+      }).catch((err) => err)
       expect(result).toBeInstanceOf(AnuthaOne)
     })
   })

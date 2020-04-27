@@ -35,7 +35,7 @@ const defaultOptions: RetryOptions = {
   tries: 10,
   factor: 2,
   minTimeout: 1000,
-  maxTimeout: Infinity
+  maxTimeout: Infinity,
 }
 
 /**
@@ -69,7 +69,7 @@ export function retry<T>(
     function inner(): Promise<T> {
       return Promise.resolve()
         .then(() => fn(getErrorToThrow, ++attempts))
-        .catch(err => {
+        .catch((err) => {
           if (err === SYM_RETRY) {
             waitTime = nextWaitTime()
             return delay(waitTime).then(inner)
@@ -103,7 +103,7 @@ export function retry<T>(
  * Waits for `ms` amount of time.
  */
 export function delay(ms: number): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve, ms))
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 /**

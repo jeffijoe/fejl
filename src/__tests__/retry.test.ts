@@ -17,7 +17,7 @@ test('exhaust', async () => {
   let count = 0
   const err = await throws(
     retry(
-      again => {
+      (again) => {
         count++
         throw again(new Error('Nah'))
       },
@@ -41,7 +41,7 @@ test('tries = 0', async () => {
   let count = 0
   const err = await throws(
     retry(
-      again => {
+      (again) => {
         count++
         throw again(new Error('Nah'))
       },
