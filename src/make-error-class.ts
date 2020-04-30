@@ -1,8 +1,6 @@
-import MakeError from 'make-error'
+import { BaseError as CustomError } from 'make-error'
 import { retry, RetryOptions } from './retry'
 import { ignore, IgnoreFunc } from './ignore'
-
-const CustomError = MakeError.BaseError
 
 /**
  * Base error class.

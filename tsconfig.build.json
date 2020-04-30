@@ -4,8 +4,5 @@
     "__tests__",
     "**/__tests__/*",
     "node_modules/*"
-  ],
-  "compilerOptions": {
-    "outDir": "./lib"
-  }
+  ]
 }
