@@ -3,20 +3,12 @@
   "version": "0.0.0-development",
   "description": "Error-making utility for JavaScript apps.",
   "main": "lib/index.js",
-  "exports": {
-    "require": "./lib/index.js",
-    "import": "./lib/esm/index.js",
-    "default": "./lib/esm/index.js"
-  },
-  "type": "commonjs",
-  "module": "lib/esm/index.js",
-  "jsnext:main": "lib/esm/index.js",
   "typings": "lib/index.d.ts",
   "engines": {
     "node": ">=6.0.0"
   },
   "scripts": {
-    "build": "rimraf lib && tsc -p tsconfig.build.cjs.json && tsc -p tsconfig.build.esm.json && cp package.esm.json lib/esm/package.json",
+    "build": "rimraf lib && tsc -p tsconfig.build.json",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "check": "tsc -p tsconfig.json --noEmit --pretty",
