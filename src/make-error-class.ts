@@ -27,10 +27,13 @@ export class BaseError<A> extends CustomError {
    *   promise.then(MyError.makeAssert('Stuff was not found'))
    */
   static makeAssert<T, A>(
-    message: string,
+    message: string | (() => string),
     attrs?: Partial<ErrorAttributes<A>>
   ): Asserter<T> {
-    return (value: T) => this.assert(value, message, attrs)
+    return (value: T) => {
+      this.assert(value, message, attrs)
+      return value as NonFalsy<T>
+    }
   }
 
   /**
@@ -42,14 +45,12 @@ export class BaseError<A> extends CustomError {
    */
   static assert<T, A>(
     data: T,
-    message?: string,
+    message?: string | (() => string),
     attrs?: Partial<ErrorAttributes<A>>
-  ): NonFalsy<T> {
+  ): asserts data {
     if (!data) {
-      throw new this(message, attrs)
+      throw new this(typeof message === 'function' ? message() : message, attrs)
     }
-
-    return data as NonFalsy<T>
   }
 
   /**
@@ -139,7 +140,7 @@ export interface BaseErrorConstructor<A> {
    * Makes an asserter function.
    */
   makeAssert<T>(
-    message: string,
+    message: string | (() => string),
     attrs?: Partial<ErrorAttributes<A>>
   ): Asserter<T>
   /**
@@ -147,9 +148,9 @@ export interface BaseErrorConstructor<A> {
    */
   assert<T>(
     data: T,
-    message?: string,
+    message?: string | (() => string),
     attrs?: Partial<ErrorAttributes<A>>
-  ): NonFalsy<T>
+  ): asserts data
   /**
    * Retries the function until it does not throw the error type.
    */
