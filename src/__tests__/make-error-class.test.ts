@@ -42,6 +42,10 @@ describe('MakeErrorClass', () => {
       // The `+ 0` asserts that the type has been narrowed by TypeScript.
       expect(input + 0).toBe(1337)
     })
+
+    it('invokes the message function when specified', () => {
+      const err = throws<Test>(() => Test.assert(false, () => 'Oh no'))
+      expect(err.message).toBe('Oh no')
     })
   })
 
