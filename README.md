@@ -69,7 +69,7 @@ Additionally, for your convenience, a few common HTTP errors have been defined w
 
 Fejl wants to get rid of excessive boilerplate in conditionally throwing errors. Therefore, each error class created with `MakeErrorClass` comes with the following **static functions**:
 
-## `assert<T>(data: T, message: string): T`
+## `assert<T>(data: T, message: string): void`
 
 Let's create ourselves an error class to play with.
 
