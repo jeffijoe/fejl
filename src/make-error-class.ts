@@ -30,7 +30,10 @@ export class BaseError<A> extends CustomError {
     message: string,
     attrs?: Partial<ErrorAttributes<A>>
   ): Asserter<T> {
-    return (value: T) => this.assert(value, message, attrs)
+    return (value: T) => {
+      this.assert(value, message, attrs)
+      return value as NonFalsy<T>
+    }
   }
 
   /**
@@ -44,12 +47,10 @@ export class BaseError<A> extends CustomError {
     data: T,
     message?: string,
     attrs?: Partial<ErrorAttributes<A>>
-  ): NonFalsy<T> {
+  ): asserts data {
     if (!data) {
       throw new this(message, attrs)
     }
-
-    return data as NonFalsy<T>
   }
 
   /**
@@ -149,7 +150,7 @@ export interface BaseErrorConstructor<A> {
     data: T,
     message?: string,
     attrs?: Partial<ErrorAttributes<A>>
-  ): NonFalsy<T>
+  ): asserts data
   /**
    * Retries the function until it does not throw the error type.
    */
