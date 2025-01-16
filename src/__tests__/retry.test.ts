@@ -21,8 +21,8 @@ test('exhaust', async () => {
         count++
         throw again(new Error('Nah'))
       },
-      { tries: 2, minTimeout: 5, factor: 1 }
-    )
+      { tries: 2, minTimeout: 5, factor: 1 },
+    ),
   )
   expect(err.message).toBe('Nah')
   expect(count).toBe(2)
@@ -45,8 +45,8 @@ test('tries = 0', async () => {
         count++
         throw again(new Error('Nah'))
       },
-      { tries: 0, minTimeout: 5, factor: 1 }
-    )
+      { tries: 0, minTimeout: 5, factor: 1 },
+    ),
   )
   expect(err.message).toBe('Nah')
   expect(count).toBe(1)

@@ -16,6 +16,7 @@ describe('MakeErrorClass', () => {
     })
     expect(Test.name).toBe('Test')
     expect(err.name).toBe('Test')
+    expect(err.toString()).toMatch(/^Test: This is a test/)
   })
 
   it('assigns default message and attributes', () => {
@@ -54,7 +55,7 @@ describe('MakeErrorClass', () => {
 
     it('throws the correct error', () => {
       const err = throws<Test>(() =>
-        Test.assert(false, 'Oh no', { foo: 'bar', statusCode: 444 })
+        Test.assert(false, 'Oh no', { foo: 'bar', statusCode: 444 }),
       )
       expect(err.message).toBe('Oh no')
       expect(err.statusCode).toBe(444)
@@ -161,13 +162,13 @@ describe('ignore', () => {
     expect(
       await Promise.resolve(false)
         .then(IgnorePlz.makeAssert('Plz'))
-        .catch(IgnorePlz.ignore())
+        .catch(IgnorePlz.ignore()),
     ).toBe(undefined)
 
     expect(
       await Promise.resolve(false)
         .then(IgnorePlz.makeAssert('Plz'))
-        .catch(IgnorePlz.ignore(123))
+        .catch(IgnorePlz.ignore(123)),
     ).toBe(123)
   })
 })

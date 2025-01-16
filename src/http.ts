@@ -41,7 +41,7 @@ export class NotFound extends MakeHttpError(404, 'Not Found') {}
  */
 export class MethodNotAllowed extends MakeHttpError(
   405,
-  'Method Not Allowed'
+  'Method Not Allowed',
 ) {}
 
 /**
@@ -54,7 +54,7 @@ export class NotAcceptable extends MakeHttpError(406, 'Not Acceptable') {}
  */
 export class ProxyAuthenticationRequired extends MakeHttpError(
   407,
-  'Proxy Authentication Required'
+  'Proxy Authentication Required',
 ) {}
 
 /**
@@ -82,7 +82,7 @@ export class LengthRequired extends MakeHttpError(411, 'Length Required') {}
  */
 export class PreconditionFailed extends MakeHttpError(
   412,
-  'Precondition Failed'
+  'Precondition Failed',
 ) {}
 
 /**
@@ -100,7 +100,7 @@ export class UriTooLong extends MakeHttpError(414, 'URI Too Long') {}
  */
 export class UnsupportedMediaType extends MakeHttpError(
   415,
-  'Unsupported Media Type'
+  'Unsupported Media Type',
 ) {}
 
 /**
@@ -108,7 +108,7 @@ export class UnsupportedMediaType extends MakeHttpError(
  */
 export class RequestRangeNotSatisfiable extends MakeHttpError(
   416,
-  'Request Range Not Satifiable'
+  'Request Range Not Satifiable',
 ) {}
 
 /**
@@ -116,7 +116,7 @@ export class RequestRangeNotSatisfiable extends MakeHttpError(
  */
 export class ExpectationFailed extends MakeHttpError(
   417,
-  'Expectation Failed'
+  'Expectation Failed',
 ) {}
 
 /**
@@ -129,7 +129,7 @@ export class IAmATeapot extends MakeHttpError(418, 'I am a Teapot') {}
  */
 export class MisdirectedRequest extends MakeHttpError(
   421,
-  'Misdirected Request'
+  'Misdirected Request',
 ) {}
 
 /**
@@ -162,7 +162,7 @@ export class UpgradeRequired extends MakeHttpError(426, 'Upgrade Required') {}
  */
 export class PreconditionRequired extends MakeHttpError(
   428,
-  'Precondition Required'
+  'Precondition Required',
 ) {}
 
 /**
@@ -175,7 +175,7 @@ export class TooManyRequests extends MakeHttpError(429, 'Too Many Requests') {}
  */
 export class RequestHeaderFieldsTooLarge extends MakeHttpError(
   431,
-  'Request Header Fields Too Large'
+  'Request Header Fields Too Large',
 ) {}
 
 /**
@@ -183,7 +183,7 @@ export class RequestHeaderFieldsTooLarge extends MakeHttpError(
  */
 export class UnavailableForLegalReasons extends MakeHttpError(
   451,
-  'Unavailable For Legal Reasons'
+  'Unavailable For Legal Reasons',
 ) {}
 
 /** *********************************************
@@ -211,7 +211,7 @@ export class BadGateway extends MakeHttpError(502, 'Bad Gateway') {}
  */
 export class ServiceUnavailable extends MakeHttpError(
   503,
-  'Service Unavailable'
+  'Service Unavailable',
 ) {}
 
 /**
@@ -224,7 +224,7 @@ export class GatewayTimeout extends MakeHttpError(504, 'Gateway Timeout') {}
  */
 export class HttpVersionNotSupported extends MakeHttpError(
   505,
-  'HTTP Version Not Supported'
+  'HTTP Version Not Supported',
 ) {}
 
 /**
@@ -232,7 +232,7 @@ export class HttpVersionNotSupported extends MakeHttpError(
  */
 export class VariantAlsoNegotiates extends MakeHttpError(
   506,
-  'Variant Also Negotiates'
+  'Variant Also Negotiates',
 ) {}
 
 /**
@@ -240,7 +240,7 @@ export class VariantAlsoNegotiates extends MakeHttpError(
  */
 export class InsufficientStorage extends MakeHttpError(
   507,
-  'Insufficient Storage'
+  'Insufficient Storage',
 ) {}
 
 /**
@@ -258,7 +258,7 @@ export class NotExtended extends MakeHttpError(510, 'Not Extended') {}
  */
 export class NetworkAuthenticationRequired extends MakeHttpError(
   511,
-  'Network Authentication Required'
+  'Network Authentication Required',
 ) {}
 
 /**
@@ -272,7 +272,7 @@ export type HttpErrorConstructor = BaseErrorConstructor<{ statusCode: number }>
  * @param statusCode
  */
 export function getHttpErrorConstructorForStatusCode(
-  statusCode: number
+  statusCode: number,
 ): HttpErrorConstructor {
   /* istanbul ignore next */
   switch (statusCode) {
@@ -368,7 +368,7 @@ export function getHttpErrorConstructorForStatusCode(
  */
 function MakeHttpError(
   statusCode: number,
-  message: string
+  message: string,
 ): HttpErrorConstructor {
   return MakeErrorClass(message, { statusCode })
 }

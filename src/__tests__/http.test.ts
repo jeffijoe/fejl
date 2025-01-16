@@ -33,7 +33,7 @@ describe('getHttpErrorConstructorForStatusCode', () => {
   it('returns the correct error constructor', () => {
     expect(http.getHttpErrorConstructorForStatusCode(403)).toBe(http.Forbidden)
     expect(http.getHttpErrorConstructorForStatusCode(888)).toBe(
-      http.GeneralError
+      http.GeneralError,
     )
   })
 })
