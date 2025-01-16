@@ -3,7 +3,7 @@
  */
 export type Retryable<T> = (
   retry: (err: any) => any,
-  attempts: number
+  attempts: number,
 ) => Promise<T>
 
 /**
@@ -49,17 +49,18 @@ const SYM_RETRY = Symbol('Retry')
  */
 export function retry<T>(
   fn: Retryable<T>,
-  opts?: Partial<RetryOptions>
+  opts?: Partial<RetryOptions>,
 ): Promise<T> {
   return Promise.resolve().then(() => {
     let attempts = 0
     let waitTime = 0
 
-    const { tries: retries, factor, minTimeout, maxTimeout } = Object.assign(
-      {},
-      defaultOptions,
-      opts
-    )
+    const {
+      tries: retries,
+      factor,
+      minTimeout,
+      maxTimeout,
+    } = Object.assign({}, defaultOptions, opts)
 
     return inner()
 
@@ -117,7 +118,7 @@ export function computeNextWaitTime(
   minTimeout: number,
   maxTimeout: number,
   waitTime: number,
-  factor: number
+  factor: number,
 ) {
   return Math.max(Math.min(waitTime * factor, maxTimeout), minTimeout)
 }

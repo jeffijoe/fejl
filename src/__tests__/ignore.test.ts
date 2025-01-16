@@ -14,13 +14,13 @@ test('ignore', async () => {
   }
 
   expect(
-    await throwYourHandsInTheAir(true).catch(ignore(OneError, TwoError)(123))
+    await throwYourHandsInTheAir(true).catch(ignore(OneError, TwoError)(123)),
   ).toBe(123)
   expect(
-    await throwYourHandsInTheAir(false).catch(ignore(OneError, TwoError)(123))
+    await throwYourHandsInTheAir(false).catch(ignore(OneError, TwoError)(123)),
   ).toBe(123)
 
   await expect(
-    throwYourHandsInTheAir(true).catch(ignore(TwoError)(123))
+    throwYourHandsInTheAir(true).catch(ignore(TwoError)(123)),
   ).rejects.toBeInstanceOf(OneError)
 })
